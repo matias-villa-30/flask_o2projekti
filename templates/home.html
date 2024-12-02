@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <title>Ohjelmisto 2 Projekti</title>
+</head>
+<body>
+    <main>
+        <div class="central-container">
+            <div class="right-part"></div>
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='board.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='game.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='questions.js') }}" defer></script>
+</body>
+</html>
