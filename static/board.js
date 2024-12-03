@@ -93,6 +93,7 @@ function generateCells() {
     questionPart.id = 'kysymys';
     leftPart.appendChild(questionPart);
 
+
     // title below the flag
 
     const otsikko = document.createElement('h1');
@@ -106,6 +107,13 @@ function generateCells() {
     answersPart.className = 'questions';
     answersPart.id = 'opciones';
     leftPart.appendChild(answersPart);
+
+    // button to confirm answer
+
+    const submitBut = document.createElement('div');
+    submitBut.className = 'questions';
+    submitBut.id = 'submit_vastaus';
+    leftPart.appendChild(submitBut);
 
     // Game buttons div
     const gameButtons = document.createElement('div');

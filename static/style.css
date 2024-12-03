@@ -152,9 +152,21 @@ main {
 .questions label {
     display: flex;               /* Aligns radio button and label text together */
     align-items: center;         /* Vertically aligns the radio button and text */
-    width: 150px;                /* Ensures labels are of the same width for proper alignment */
+    width: 50px;                /* Ensures labels are of the same width for proper alignment */
 }
 
 input[type="radio"] {
     margin-right: 10px;          /* Adds space between radio button and the label text */
+}
+
+#submit_vastaus {
+    display: flex;
+    align-items: end;
+}
+
+#kysymys img {
+    width: 250px; /* Fixed width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensures the flag fits within the defined size */
+    display: block; /* Ensures proper alignment */
 }
