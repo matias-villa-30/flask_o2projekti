@@ -165,7 +165,7 @@ input[type="radio"] {
 }
 
 #kysymys img {
-    width: 250px; /* Fixed width */
+    width: 200px; /* Fixed width */
     height: auto; /* Maintain aspect ratio */
     object-fit: contain; /* Ensures the flag fits within the defined size */
     display: block; /* Ensures proper alignment */
