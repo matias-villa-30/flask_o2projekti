@@ -1,8 +1,10 @@
 'use strict';
 
+// Initialize variables
 let player_position = 1;
 let player2_position = 1;
-let dice_roll_counter = 1;
+let dice_roll_counter = 1; // Counts total rolls
+let current_player = 1;    // Tracks the current player's turn (1 or 2)
 let points_player1 = 0;
 let points_player2 = 0;
 
@@ -11,39 +13,111 @@ function roll_dice() {
   const rolledNumber = Math.floor(Math.random() * 6) + 1;
   document.getElementById("dice_result").textContent = `Rolled Dice: ${rolledNumber}`;
 
+  // Update the position based on the current player
+  if (current_player === 1) {
+    player_position = (player_position + rolledNumber) % 28;
+    trigger_quiz(player_position, current_player);
+    current_player = 2; // Switch to Player 2
+  } else {
+    player2_position = (player2_position + rolledNumber) % 28;
+    trigger_quiz(player2_position, current_player);
+    current_player = 1; // Switch to Player 1
+  }
+
   // Increment the dice roll counter
   dice_roll_counter++;
 
-  // Determine which player's turn it is based on the counter
-  if (dice_roll_counter % 2 !== 0) {
-    // Player 1's turn
-    player_position = (player_position + rolledNumber) % 28;
-  } else {
-    // Player 2's turn
-    player2_position = (player2_position + rolledNumber) % 28;
-  }
-
+  // Update the display for both players
   updatePlayerPositionDisplay();
 
-  // Trigger quizzes based on the player position
-  if ([2, 3, 5, 6, 7].includes(player_position) && dice_roll_counter % 2 !== 0) {
+  // Debugging
+  console.log(`Rolled: ${rolledNumber}, Dice Counter: ${dice_roll_counter}`);
+  console.log(`Player 1: ${player_position}, Player 2: ${player2_position}`);
+}
+
+// Trigger quizzes based on position
+function trigger_quiz(position, player) {
+  if ([2, 3, 5, 6, 7].includes(position)) {
     show_question1();
-  } else if ([9, 10, 11, 13, 14].includes(player_position) && dice_roll_counter % 2 !== 0) {
+  } else if ([9, 10, 11, 13, 14].includes(position)) {
     kysymys2();
-  } else if ([16, 17, 19, 20, 21].includes(player_position) && dice_roll_counter % 2 !== 0) {
+  } else if ([16, 17, 19, 20, 21].includes(position)) {
     kysymys3();
-  } else if ([23, 24, 25, 27, 28].includes(player_position) && dice_roll_counter % 2 !== 0) {
+  } else if ([23, 24, 25, 27, 0].includes(position)) {
     kysymys4();
+  } else if ([4, 8, 12, 15, 18, 22, 26].includes(position)) {
+    // Trigger a random event
+    console.log(`Random event triggered for Player ${player} at position ${position}`);
+    randomEvent(player);
   }
 
-  if ([2, 3, 5, 6, 7].includes(player2_position) && dice_roll_counter % 2 === 0) {
-    show_question1();
-  } else if ([9, 10, 11, 13, 14].includes(player2_position) && dice_roll_counter % 2 === 0) {
-    kysymys2();
-  } else if ([16, 17, 19, 20, 21].includes(player2_position) && dice_roll_counter % 2 === 0) {
-    kysymys3();
-  } else if ([23, 24, 25, 27, 28].includes(player2_position) && dice_roll_counter % 2 === 0) {
-    kysymys4();
+  console.log(`Quiz or event triggered for Player ${player} at position ${position}`);
+
+  // Check for a winner after every event or quiz
+  checkForWinner();
+}
+
+
+function randomEvent(current_player) {
+  const events = [
+    () => { // Event 1: Player 1 gains 200 points
+      points_player1 += 200;
+      console.log("Event: Player 1 gains 200 points!");
+    },
+    () => { // Event 2: Player 2 gains 200 points
+      points_player2 += 200;
+      console.log("Event: Player 2 gains 200 points!");
+    },
+    () => { // Event 3: Player 1 points reset to 0
+      points_player1 = 0;
+      console.log("Event: Player 1 points reset to 0!");
+    },
+    () => { // Event 4: Player 2 points reset to 0
+      points_player2 = 0;
+      console.log("Event: Player 2 points reset to 0!");
+    },
+    () => { // Event 5: Player 1 gains 1000 points and wins
+      points_player1 = 1000;
+      console.log("Event: Player 1 wins the game with 1000 points!");
+      declareWinner(1);
+    },
+    () => { // Event 6: Player 2 gains 1000 points and wins
+      points_player2 = 1000;
+      console.log("Event: Player 2 wins the game with 1000 points!");
+      declareWinner(2);
+    }
+  ];
+
+  // Select and execute a random event
+  const randomIndex = Math.floor(Math.random() * events.length);
+  events[randomIndex]();
+
+  // Display updated scores
+  console.log(`Player 1 Points: ${points_player1}`);
+  console.log(`Player 2 Points: ${points_player2}`);
+}
+function declareWinner(player) {
+  alert(`Player ${player} wins the game!`);
+  console.log(`Player ${player} has won the game!`);
+
+  // Reset game or trigger additional end-game logic here
+  resetGame();
+}
+
+function resetGame() {
+  // Example reset logic
+  points_player1 = 0;
+  points_player2 = 0;
+  console.log("Game has been reset. Ready for a new round.");
+  // Add more logic as needed to restart or redirect to a new state
+}
+function checkForWinner() {
+  if (points_player1 >= 1000) {
+    console.log("Player 1 has reached 1000 points and wins the game!");
+    declareWinner(1);
+  } else if (points_player2 >= 1000) {
+    console.log("Player 2 has reached 1000 points and wins the game!");
+    declareWinner(2);
   }
 }
 
@@ -53,12 +127,10 @@ function updatePlayerPositionDisplay() {
   const board_square2 = document.getElementById(`square${player2_position}`);
   const locate_player = document.getElementById('position-player');
 
-  if (board_square1) {
-    locate_player.innerHTML = `<p>Position Player 1: ${board_square1.id}</p>`;
-  }
-  if (board_square2) {
-    locate_player.innerHTML += `<p>Position Player 2: ${board_square2.id}</p>`;
-  }
+  locate_player.innerHTML = `
+    ${board_square1 ? `<p>Position Player 1: ${board_square1.id}</p>` : ''}
+    ${board_square2 ? `<p>Position Player 2: ${board_square2.id}</p>` : ''}
+  `;
 }
 
 // Fetch Country Data
@@ -67,12 +139,11 @@ async function fetchCountriesData() {
   return Object.values(await response.json());
 }
 
-// Show Question 1
 async function show_question1() {
   const titulo = document.getElementById("titulo");
   const results = document.getElementById("kysymys");
   const check_box_container = document.getElementById("opciones");
-  const send_answer = document.getElementById('answer-button'); // Button to submit the answer
+  const send_answer = document.getElementById("answer-button"); // Button to submit the answer
   const roll_dice = document.getElementById("roll_dice");
 
   // Ensure the `results` and `check_box_container` elements exist
@@ -80,17 +151,21 @@ async function show_question1() {
     console.error("Missing required elements in the DOM. Ensure 'kysymys', 'opciones', and 'answer-button' exist.");
     return;
   }
-  // disable roll_dice
+
+  // Disable roll_dice during the question
   roll_dice.disabled = true;
+
   // Clear previous content
   results.innerHTML = "";
   check_box_container.innerHTML = "";
 
+  // Fetch countries data
   const countriesData = await fetchCountriesData();
   const validCountries = countriesData.filter(
     (country) => country.population && country.flags
   );
 
+  // Choose a correct country
   const correctCountry = validCountries[Math.floor(Math.random() * validCountries.length)];
   const correctFlag = correctCountry.flags.png;
   const correctName = correctCountry.name.common;
@@ -116,18 +191,18 @@ async function show_question1() {
   // Combine correct and wrong answers, then shuffle
   const allOptions = shuffleOptions([...wrongCountries, correctName]);
 
-  // Create checkboxes for all options
+  // Create radio buttons for all options
   allOptions.forEach((option, index) => {
     const label = document.createElement("label");
     label.textContent = option;
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "radio";
-    checkbox.value = option; // Use the option as value
-    checkbox.name = "country"; // Ensure unique name for the radio group
-    checkbox.id = `radio-${index}`; // Unique ID for each option
+    const radio = document.createElement("input");
+    radio.type = "radio";
+    radio.value = option; // Use the option as value
+    radio.name = "country"; // Ensure unique name for the radio group
+    radio.id = `radio-${index}`; // Unique ID for each option
 
-    label.prepend(checkbox);
+    label.prepend(radio);
     check_box_container.appendChild(label);
     check_box_container.appendChild(document.createElement("br"));
   });
@@ -144,27 +219,27 @@ async function show_question1() {
     const selectedValue = selectedOption.value;
     let pointsToAdd = 50; // Points to add for a correct answer
 
-
     // Check if the selected answer is correct
     if (selectedValue === correctName) {
       alert("Correct answer!");
-      if (dice_roll_counter % 2 === 0) {
+      if (current_player === 1) {
         points_player2 += pointsToAdd;
       } else {
         points_player1 += pointsToAdd;
       }
-
+    } else {
+      alert("Wrong answer!");
     }
 
     // Display updated scores
     console.log(`Player 1 Points: ${points_player1}`);
     console.log(`Player 2 Points: ${points_player2}`);
 
-    // Advance to the next question or logic
+    // Enable roll dice and prepare for the next turn
     roll_dice.disabled = false;
-    dice_roll_counter++;
   };
 }
+
 
 
 // Show Question 2
