@@ -205,6 +205,8 @@ for (let i = 1; i < leftRightCells - 1; i++) {
     gameStats.id = 'estadisticas';
     rightPart.appendChild(gameStats);
 
+    // locate current turn and player points on the screen
+
     const gameMap = document.createElement('div');
     gameMap.className = 'map';
     gameMap.id = 'map-points';

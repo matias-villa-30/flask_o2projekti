@@ -10,6 +10,8 @@ let points_player2 = 0;
 
 // Roll Dice Functionality
 function roll_dice() {
+
+
   const rolledNumber = Math.floor(Math.random() * 6) + 1;
   document.getElementById("dice_result").textContent = `Rolled Dice: ${rolledNumber}`;
 
@@ -59,30 +61,37 @@ function trigger_quiz(position, player) {
 
 
 function randomEvent(current_player) {
+
   const events = [
     () => { // Event 1: Player 1 gains 200 points
       points_player1 += 200;
+      alert("Event: Player 1 gains 200 points!");
       console.log("Event: Player 1 gains 200 points!");
     },
     () => { // Event 2: Player 2 gains 200 points
       points_player2 += 200;
+      alert("Event: Player 2 gains 200 points!");
       console.log("Event: Player 2 gains 200 points!");
     },
     () => { // Event 3: Player 1 points reset to 0
       points_player1 = 0;
+      alert("Event: Player 1 points reset to 0!");
       console.log("Event: Player 1 points reset to 0!");
     },
     () => { // Event 4: Player 2 points reset to 0
       points_player2 = 0;
+      alert("Event: Player 2 points reset to 0!");
       console.log("Event: Player 2 points reset to 0!");
     },
     () => { // Event 5: Player 1 gains 1000 points and wins
       points_player1 = 1000;
       console.log("Event: Player 1 wins the game with 1000 points!");
+      alert("Event: Player 1 wins the game with 1000 points!");
       declareWinner(1);
     },
     () => { // Event 6: Player 2 gains 1000 points and wins
       points_player2 = 1000;
+      alert("Event: Player 2 wins the game with 1000 points!");
       console.log("Event: Player 2 wins the game with 1000 points!");
       declareWinner(2);
     }
@@ -92,6 +101,11 @@ function randomEvent(current_player) {
   const randomIndex = Math.floor(Math.random() * events.length);
   events[randomIndex]();
 
+  // display scores
+  const show_points = document.getElementById('map-points');
+    show_points.innerHTML = `<p>Player 1: ${points_player1} points</p>
+        <p>Player 2: ${points_player2} points</p>
+        <p>Current turn: Player ${current_player}</p>`;
   // Display updated scores
   console.log(`Player 1 Points: ${points_player1}`);
   console.log(`Player 2 Points: ${points_player2}`);
@@ -145,6 +159,7 @@ async function show_question1() {
   const check_box_container = document.getElementById("opciones");
   const send_answer = document.getElementById("answer-button"); // Button to submit the answer
   const roll_dice = document.getElementById("roll_dice");
+  const show_points = document.getElementById('map-points');
 
   // Ensure the `results` and `check_box_container` elements exist
   if (!results || !check_box_container || !send_answer) {
@@ -224,6 +239,8 @@ async function show_question1() {
       alert("Correct answer!");
       if (current_player === 1) {
         points_player2 += pointsToAdd;
+
+
       } else {
         points_player1 += pointsToAdd;
       }
@@ -234,7 +251,9 @@ async function show_question1() {
     // Display updated scores
     console.log(`Player 1 Points: ${points_player1}`);
     console.log(`Player 2 Points: ${points_player2}`);
-
+    show_points.innerHTML = `<p>Player 1: ${points_player1} points</p>
+        <p>Player 2: ${points_player2} points</p>
+        <p>Current turn: Player ${current_player}</p>`;
     // Enable roll dice and prepare for the next turn
     roll_dice.disabled = false;
   };
@@ -336,6 +355,10 @@ async function kysymys2() {
     // Display updated scores
     console.log(`Player 1 Points: ${points_player1}`);
     console.log(`Player 2 Points: ${points_player2}`);
+    const show_points = document.getElementById('map-points');
+    show_points.innerHTML = `<p>Player 1: ${points_player1} points</p>
+        <p>Player 2: ${points_player2} points</p>
+        <p>Current turn: Player ${current_player}</p>`;
 
     // Advance to the next question or logic
     roll_dice.disabled = false;
@@ -444,7 +467,10 @@ async function kysymys3(event) {
     // Display updated scores
     console.log(`Player 1 Points: ${points_player1}`);
     console.log(`Player 2 Points: ${points_player2}`);
-
+    const show_points = document.getElementById('map-points');
+    show_points.innerHTML = `<p>Player 1: ${points_player1} points</p>
+        <p>Player 2: ${points_player2} points</p>
+        <p>Current turn: Player ${current_player}</p>`;
     // Advance to the next question or logic
     roll_dice.disabled = false;
     dice_roll_counter++;
@@ -557,6 +583,10 @@ async function kysymys4(event) {
     console.log(`Player 1 Points: ${points_player1}`);
     console.log(`Player 2 Points: ${points_player2}`);
 
+    const show_points = document.getElementById('map-points');
+    show_points.innerHTML = `<p>Player 1: ${points_player1} points</p>
+        <p>Player 2: ${points_player2} points</p>
+        <p>Current turn: Player ${current_player}</p>`;
     // Advance to the next question or logic
     roll_dice.disabled = false;
     dice_roll_counter++;
