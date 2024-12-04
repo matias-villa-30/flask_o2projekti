@@ -2,7 +2,9 @@
 
 let player_position = 1;
 let player2_position = 1;
-let dice_roll_counter = 0;
+let dice_roll_counter = 1;
+let points_player1 = 0;
+let points_player2 = 0;
 
 // Roll Dice Functionality
 function roll_dice() {
@@ -70,13 +72,16 @@ async function show_question1() {
   const titulo = document.getElementById("titulo");
   const results = document.getElementById("kysymys");
   const check_box_container = document.getElementById("opciones");
+  const send_answer = document.getElementById('answer-button'); // Button to submit the answer
+  const roll_dice = document.getElementById("roll_dice");
 
   // Ensure the `results` and `check_box_container` elements exist
-  if (!results || !check_box_container) {
-    console.error("Missing required elements in the DOM. Ensure 'kysymys' and 'opciones' exist.");
+  if (!results || !check_box_container || !send_answer) {
+    console.error("Missing required elements in the DOM. Ensure 'kysymys', 'opciones', and 'answer-button' exist.");
     return;
   }
-
+  // disable roll_dice
+  roll_dice.disabled = true;
   // Clear previous content
   results.innerHTML = "";
   check_box_container.innerHTML = "";
@@ -118,7 +123,7 @@ async function show_question1() {
 
     const checkbox = document.createElement("input");
     checkbox.type = "radio";
-    checkbox.value = index;
+    checkbox.value = option; // Use the option as value
     checkbox.name = "country"; // Ensure unique name for the radio group
     checkbox.id = `radio-${index}`; // Unique ID for each option
 
@@ -127,27 +132,56 @@ async function show_question1() {
     check_box_container.appendChild(document.createElement("br"));
   });
 
-  // Add a submit button for the next step
-  const submitPlace = document.getElementById("submit_vastaus");
-  submitPlace.innerHTML = `
-    <form id="next">
-      <button type="submit">Next</button>
-    </form>
-  `;
+  // Event listener for the answer button
+  send_answer.onclick = () => {
+    // Get the selected option
+    const selectedOption = document.querySelector('input[name="country"]:checked');
+    if (!selectedOption) {
+      alert("Please select an answer.");
+      return;
+    }
+
+    const selectedValue = selectedOption.value;
+    let pointsToAdd = 50; // Points to add for a correct answer
+
+
+    // Check if the selected answer is correct
+    if (selectedValue === correctName) {
+      alert("Correct answer!");
+      if (dice_roll_counter % 2 === 0) {
+        points_player2 += pointsToAdd;
+      } else {
+        points_player1 += pointsToAdd;
+      }
+
+    }
+
+    // Display updated scores
+    console.log(`Player 1 Points: ${points_player1}`);
+    console.log(`Player 2 Points: ${points_player2}`);
+
+    // Advance to the next question or logic
+    roll_dice.disabled = false;
+    dice_roll_counter++;
+  };
 }
+
 
 // Show Question 2
 async function kysymys2() {
   const titulo = document.getElementById("titulo");
   const results = document.getElementById("kysymys");
   const check_box_container = document.getElementById("opciones");
+  const send_answer = document.getElementById('answer-button'); // Button to submit the answer
+  const roll_dice = document.getElementById('roll_dice');
 
   // Ensure the `results` and `check_box_container` elements exist
-  if (!results || !check_box_container) {
-    console.error("Missing required elements in the DOM. Ensure 'kysymys' and 'opciones' exist.");
+  if (!results || !check_box_container || !send_answer) {
+    console.error("Missing required elements in the DOM. Ensure 'kysymys', 'opciones', and 'answer-button' exist.");
     return;
   }
-
+  // disable roll_dice button while answering question
+  roll_dice.disabled = true;
   // Clear previous content
   results.innerHTML = "";
   check_box_container.innerHTML = "";
@@ -182,14 +216,14 @@ async function kysymys2() {
   // Combine correct and wrong answers, then shuffle
   const allOptions = shuffleOptions([...wrongCapitals, correctCapital]);
 
-  // Create checkboxes for all options
+  // Create radio buttons for all options
   allOptions.forEach((option, index) => {
     const label = document.createElement("label");
     label.textContent = option;
 
     const checkbox = document.createElement("input");
     checkbox.type = "radio";
-    checkbox.value = index;
+    checkbox.value = option; // Use the option as value
     checkbox.name = "capital"; // Ensure unique name for the radio group
     checkbox.id = `radio-${index}`; // Unique ID for each option
 
@@ -198,14 +232,42 @@ async function kysymys2() {
     check_box_container.appendChild(document.createElement("br"));
   });
 
-  // Add a submit button for the next step
-  const submitPlace = document.getElementById("submit_vastaus");
-  submitPlace.innerHTML = `
-    <form id="next">
-      <button type="submit">Next</button>
-    </form>
-  `;
+  // Event listener for the answer button
+  send_answer.onclick = () => {
+    // Get the selected option
+    const selectedOption = document.querySelector('input[name="capital"]:checked');
+    if (!selectedOption) {
+      alert("Please select an answer.");
+      return;
+    }
+
+    const selectedValue = selectedOption.value;
+    let pointsToAdd = 100; // Points to add for a correct answer
+
+
+    // Check if the selected answer is correct
+    if (selectedValue === correctCapital) {
+      alert("Correct answer!");
+      if (dice_roll_counter % 2 === 0) {
+        points_player2 += pointsToAdd;
+      } else {
+        points_player1 += pointsToAdd;
+      }
+    } else {
+      alert("Wrong answer!");
+
+    }
+
+    // Display updated scores
+    console.log(`Player 1 Points: ${points_player1}`);
+    console.log(`Player 2 Points: ${points_player2}`);
+
+    // Advance to the next question or logic
+    roll_dice.disabled = false;
+    dice_roll_counter++;
+  };
 }
+
 
 // Show Question 3
 async function kysymys3(event) {
@@ -216,13 +278,16 @@ async function kysymys3(event) {
   const titulo = document.getElementById("titulo");
   const results = document.getElementById("kysymys");
   const check_box_container = document.getElementById("opciones");
+  const send_answer = document.getElementById('answer-button'); // Button to submit the answer
+  const roll_dice = document.getElementById('roll_dice');
 
   // Ensure the `results` and `check_box_container` elements exist
-  if (!results || !check_box_container) {
-    console.error("Missing required elements in the DOM. Ensure 'kysymys' and 'opciones' exist.");
+  if (!results || !check_box_container || !send_answer) {
+    console.error("Missing required elements in the DOM. Ensure 'kysymys', 'opciones', and 'answer-button' exist.");
     return;
   }
-
+  //
+  roll_dice.disabled = true;
   // Clear previous content
   results.innerHTML = "";
   check_box_container.innerHTML = "";
@@ -259,14 +324,14 @@ async function kysymys3(event) {
   // Combine correct and wrong answers, then shuffle
   const allOptions = shuffleOptions([...wrongPopulations, correctPopulation]);
 
-  // Create checkboxes for all options
+  // Create radio buttons for all options
   allOptions.forEach((option, index) => {
     const label = document.createElement("label");
-    label.textContent = option.toLocaleString();
+    label.textContent = option.toLocaleString(); // Format population as a string with commas
 
     const checkbox = document.createElement("input");
     checkbox.type = "radio";
-    checkbox.value = index;
+    checkbox.value = option; // Use the option value (population number)
     checkbox.name = "population"; // Ensure unique name for the radio group
     checkbox.id = `radio-${index}`; // Unique ID for each option
 
@@ -275,14 +340,42 @@ async function kysymys3(event) {
     check_box_container.appendChild(document.createElement("br"));
   });
 
-  // Add a submit button for the next step
-  const submitPlace = document.getElementById("submit_vastaus");
-  submitPlace.innerHTML = `
-    <form id="next">
-      <button type="submit">Next</button>
-    </form>
-  `;
+  // Event listener for the answer button
+  send_answer.onclick = () => {
+    // Get the selected option
+    const selectedOption = document.querySelector('input[name="population"]:checked');
+    if (!selectedOption) {
+      alert("Please select an answer.");
+      return;
+    }
+
+    const selectedValue = parseInt(selectedOption.value, 10); // Parse the selected value as a number
+    let pointsToAdd = 150; // Points to add for a correct answer
+
+
+    // Check if the selected answer is correct
+    if (selectedValue === correctPopulation) {
+      alert("Correct answer!");
+      if (dice_roll_counter % 2 === 0) {
+        points_player2 += pointsToAdd;
+      } else {
+        points_player1 += pointsToAdd;
+      }
+    } else {
+      alert("Wrong answer!");
+
+    }
+
+    // Display updated scores
+    console.log(`Player 1 Points: ${points_player1}`);
+    console.log(`Player 2 Points: ${points_player2}`);
+
+    // Advance to the next question or logic
+    roll_dice.disabled = false;
+    dice_roll_counter++;
+  };
 }
+
 
 // Show Question 4
 async function kysymys4(event) {
@@ -293,12 +386,16 @@ async function kysymys4(event) {
   const titulo = document.getElementById("titulo");
   const results = document.getElementById("kysymys");
   const check_box_container = document.getElementById("opciones");
+  const send_answer = document.getElementById('answer-button'); // Button to submit the answer
+  const roll_dice = document.getElementById('roll_dice');
 
   // Ensure the `results` and `check_box_container` elements exist
-  if (!results || !check_box_container) {
-    console.error("Missing required elements in the DOM. Ensure 'kysymys' and 'opciones' exist.");
+  if (!results || !check_box_container || !send_answer) {
+    console.error("Missing required elements in the DOM. Ensure 'kysymys', 'opciones', and 'answer-button' exist.");
     return;
   }
+  // disable roll button while answering questions
+  roll_dice.disabled = true;
 
   // Clear previous content
   results.innerHTML = "";
@@ -338,14 +435,14 @@ async function kysymys4(event) {
   // Combine correct and wrong answers, then shuffle
   const allOptions = shuffleOptions([...wrongTimezones, correctTimezones]);
 
-  // Create checkboxes for all options
+  // Create radio buttons for all options
   allOptions.forEach((option, index) => {
     const label = document.createElement("label");
-    label.textContent = option.join(", ");
+    label.textContent = option.join(", "); // Combine timezones into a string
 
     const checkbox = document.createElement("input");
     checkbox.type = "radio";
-    checkbox.value = index;
+    checkbox.value = option.join(", "); // Use the timezones as the value
     checkbox.name = "timezones"; // Ensure unique name for the radio group
     checkbox.id = `radio-${index}`; // Unique ID for each option
 
@@ -354,14 +451,43 @@ async function kysymys4(event) {
     check_box_container.appendChild(document.createElement("br"));
   });
 
-  // Add a submit button for the next step
-  const submitPlace = document.getElementById("submit_vastaus");
-  submitPlace.innerHTML = `
-    <form id="next">
-      <button type="submit">Next</button>
-    </form>
-  `;
+  // Event listener for the answer button
+  send_answer.onclick = () => {
+    // Get the selected option
+    const selectedOption = document.querySelector('input[name="timezones"]:checked');
+    if (!selectedOption) {
+      alert("Please select an answer.");
+      return;
+    }
+
+    const selectedValue = selectedOption.value.split(", "); // Split the selected value back into an array
+    let pointsToAdd = 75; // Points to add for a correct answer
+
+
+    // Check if the selected answer is correct
+    const isCorrect = selectedValue.every((timezone) => correctTimezones.includes(timezone));
+    if (isCorrect) {
+      alert("Correct answer!");
+      if (dice_roll_counter % 2 === 0) {
+        points_player2 += pointsToAdd;
+      } else {
+        points_player1 += pointsToAdd;
+      }
+    } else {
+      alert("Wrong answer!");
+
+    }
+
+    // Display updated scores
+    console.log(`Player 1 Points: ${points_player1}`);
+    console.log(`Player 2 Points: ${points_player2}`);
+
+    // Advance to the next question or logic
+    roll_dice.disabled = false;
+    dice_roll_counter++;
+  };
 }
+
 
 // Helper function to shuffle an array
 function shuffleOptions(options) {

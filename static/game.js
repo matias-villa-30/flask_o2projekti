@@ -4,7 +4,7 @@
 
 const rules_button = document.getElementById('rules_button');
 rules_button.onclick = () => {
-    alert("Game starts after selecting the name of the players. Player move around the board throwing a dice, each square will be a different country, then the players will answer questions about that country, that will win or lose them points. Game finishes when the first player reaches to 100 points. Huom! There are also squares that will surprise the player.");
+    alert("Game starts after selecting the name of the players. Player move around the board throwing a dice, each square will be a different country, then the players will answer questions about that country, that will win or lose them points. Game finishes when the first player reaches 1000 points. Huom! There are also squares that will surprise the player.");
 };
 
 const quit_button = document.getElementById('quit_button');
@@ -48,17 +48,27 @@ async function gameOn(event) {
     <p>Player 2: ${player2}</p>
   `;
   const reminder = alert("Click roll dice to begin");
-  const dado = document.getElementById("roll_dice");
-  dado.disabled = false;
+
+  // disable start button
   const start_button = document.getElementById('start_button');
   start_button.disabled = true;
+
+  //Enable game buttons
+  const dado = document.getElementById("roll_dice");
+  dado.disabled = false;
+
+  const pass = document.getElementById('pass-button');
+  pass.disabled = false;
+
+  const send_answer = document.getElementById('answer-button');
+  send_answer.disabled = false;
+
 }
 
 
 // Add event listener to the start button
 const start_game = document.getElementById("start_button");
 start_game.addEventListener("click", player_name);
-
 
 
 

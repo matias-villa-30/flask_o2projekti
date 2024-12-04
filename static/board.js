@@ -26,57 +26,88 @@ function generateCells() {
     main.appendChild(firstCell);
     cellCounter++;
 
-    for (let i = 1; i < topBottomCells; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.id = `square${cellCounter}`;
-        cell.style.width = `${cellWidth}px`;
-        cell.style.height = `${cellHeight}px`;
-        cell.style.top = `${mainHeight - cellHeight}px`;
-        cell.style.left = `${(mainWidth - cellWidth) - i * (mainWidth - cellWidth) / (topBottomCells - 1)}px`;
+    const noPointsCells = [1, 4, 8, 12, 15, 18, 22, 26]; // Cells without points
+
+// Bottom row (50 points)
+for (let i = 1; i < topBottomCells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.id = `square${cellCounter}`;
+    cell.style.width = `${cellWidth}px`;
+    cell.style.height = `${cellHeight}px`;
+    cell.style.top = `${mainHeight - cellHeight}px`;
+    cell.style.left = `${(mainWidth - cellWidth) - i * (mainWidth - cellWidth) / (topBottomCells - 1)}px`;
+
+    if (noPointsCells.includes(cellCounter)) {
         cell.textContent = `Ruutu ${cellCounter}`;
-        main.appendChild(cell);
-        cellCounter++;
+    } else {
+        cell.textContent = `Ruutu ${cellCounter} - 50 points`;
     }
 
-    for (let i = 1; i < leftRightCells; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.id = `square${cellCounter}`;
-        cell.style.width = `${cellWidth}px`;
-        cell.style.height = `${cellHeight}px`;
-        cell.style.top = `${(mainHeight - cellHeight) - i * (mainHeight - cellHeight) / (leftRightCells - 1)}px`;
-        cell.style.left = 0;
+    main.appendChild(cell);
+    cellCounter++;
+}
+
+// Left column (100 points)
+for (let i = 1; i < leftRightCells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.id = `square${cellCounter}`;
+    cell.style.width = `${cellWidth}px`;
+    cell.style.height = `${cellHeight}px`;
+    cell.style.top = `${(mainHeight - cellHeight) - i * (mainHeight - cellHeight) / (leftRightCells - 1)}px`;
+    cell.style.left = 0;
+
+    if (noPointsCells.includes(cellCounter)) {
         cell.textContent = `Ruutu ${cellCounter}`;
-        main.appendChild(cell);
-        cellCounter++;
+    } else {
+        cell.textContent = `Ruutu ${cellCounter} - 100 points`;
     }
 
-    for (let i = 1; i < topBottomCells; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.id = `square${cellCounter}`;
-        cell.style.width = `${cellWidth}px`;
-        cell.style.height = `${cellHeight}px`;
-        cell.style.top = 0;
-        cell.style.left = `${i * (mainWidth - cellWidth) / (topBottomCells - 1)}px`;
+    main.appendChild(cell);
+    cellCounter++;
+}
+
+// Top row (150 points)
+for (let i = 1; i < topBottomCells; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.id = `square${cellCounter}`;
+    cell.style.width = `${cellWidth}px`;
+    cell.style.height = `${cellHeight}px`;
+    cell.style.top = 0;
+    cell.style.left = `${i * (mainWidth - cellWidth) / (topBottomCells - 1)}px`;
+
+    if (noPointsCells.includes(cellCounter)) {
         cell.textContent = `Ruutu ${cellCounter}`;
-        main.appendChild(cell);
-        cellCounter++;
+    } else {
+        cell.textContent = `Ruutu ${cellCounter} - 150 points`;
     }
 
-    for (let i = 1; i < leftRightCells - 1; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.id = `square${cellCounter}`;
-        cell.style.width = `${cellWidth}px`;
-        cell.style.height = `${cellHeight}px`;
-        cell.style.top = `${i * (mainHeight - cellHeight) / (leftRightCells - 1)}px`;
-        cell.style.left = `${mainWidth - cellWidth}px`;
+    main.appendChild(cell);
+    cellCounter++;
+}
+
+// Right column (75 points)
+for (let i = 1; i < leftRightCells - 1; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.id = `square${cellCounter}`;
+    cell.style.width = `${cellWidth}px`;
+    cell.style.height = `${cellHeight}px`;
+    cell.style.top = `${i * (mainHeight - cellHeight) / (leftRightCells - 1)}px`;
+    cell.style.left = `${mainWidth - cellWidth}px`;
+
+    if (noPointsCells.includes(cellCounter)) {
         cell.textContent = `Ruutu ${cellCounter}`;
-        main.appendChild(cell);
-        cellCounter++;
+    } else {
+        cell.textContent = `Ruutu ${cellCounter} - 75 points`;
     }
+
+    main.appendChild(cell);
+    cellCounter++;
+}
+
 
     const centralContainer = document.createElement('div');
     centralContainer.className = 'central-container';
@@ -108,12 +139,7 @@ function generateCells() {
     answersPart.id = 'opciones';
     leftPart.appendChild(answersPart);
 
-    // button to confirm answer
 
-    const submitBut = document.createElement('div');
-    submitBut.className = 'questions';
-    submitBut.id = 'submit_vastaus';
-    leftPart.appendChild(submitBut);
 
     // Game buttons div
     const gameButtons = document.createElement('div');
@@ -121,15 +147,17 @@ function generateCells() {
     leftPart.appendChild(gameButtons);
 
     // game containter buttons
-    const but1 = document.createElement('button');
-    but1.className = 'button';
-    but1.textContent = 'Pass';
-    but1.disabled = true;
+    const pass_button = document.createElement('button');
+    pass_button.className = 'button';
+    pass_button.id = 'pass-button'
+    pass_button.textContent = 'Pass';
+    pass_button.disabled = true;
 
-    const but2 = document.createElement('button');
-    but2.className = 'button';
-    but2.textContent = 'Hint';
-    but2.disabled = true;
+    const answer_button = document.createElement('button');
+    answer_button.className = 'button';
+    answer_button.id = 'answer-button';
+    answer_button.textContent = 'Submit Answer';
+    answer_button.disabled = true;
 
     const nappi_button = document.createElement('button');
     nappi_button.className = 'button';
@@ -137,8 +165,8 @@ function generateCells() {
     nappi_button.textContent = "Roll dice";
     nappi_button.disabled = true;
 
-    gameButtons.appendChild(but1);
-    gameButtons.appendChild(but2);
+    gameButtons.appendChild(pass_button);
+    gameButtons.appendChild(answer_button);
     gameButtons.appendChild(nappi_button);
 
 
@@ -179,6 +207,7 @@ function generateCells() {
 
     const gameMap = document.createElement('div');
     gameMap.className = 'map';
+    gameMap.id = 'map-points';
     gameStats.appendChild(gameMap);
 
     const playerStats = document.createElement('div');
@@ -216,4 +245,3 @@ function generateCells() {
 
 generateCells();
 
-window.addEventListener('resize', generateCells);
