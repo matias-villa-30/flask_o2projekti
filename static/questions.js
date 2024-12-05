@@ -8,6 +8,43 @@ let current_player = 1;    // Tracks the current player's turn (1 or 2)
 let points_player1 = 0;
 let points_player2 = 0;
 
+
+// Pass buttons functionality
+
+function pass_button() {
+    const passButton = document.getElementById('pass-button');
+    const show_points = document.getElementById('map-points');
+
+    passButton.addEventListener('click', () => {
+        if (current_player === 1) {
+            if (points_player1 >= 100) {
+                points_player1 -= 100; // Deduct 100 points for passing
+                dice_roll_counter += 1; // Increment dice roll counter
+                current_player = 2; // Switch to player 2
+            } else {
+                alert("Player 1 doesn't have enough points to pass.");
+                return;
+            }
+        } else if (current_player === 2) {
+            if (points_player2 >= 100) {
+                points_player2 -= 100; // Deduct 100 points for passing
+                dice_roll_counter += 1; // Increment dice roll counter
+                current_player = 1; // Switch to player 1
+            } else {
+                alert("Player 2 doesn't have enough points to pass.");
+                return;
+            }
+        }
+
+        // Update the points and turn display in the HTML
+        show_points.innerHTML = `
+            <p>Player 1: ${points_player1} points</p>
+            <p>Player 2: ${points_player2} points</p>
+            <p>Current turn: Player ${current_player}</p>
+        `;
+    });
+}
+
 // Roll Dice Functionality
 function roll_dice() {
 
@@ -239,8 +276,6 @@ async function show_question1() {
       alert("Correct answer!");
       if (current_player === 1) {
         points_player2 += pointsToAdd;
-
-
       } else {
         points_player1 += pointsToAdd;
       }
@@ -254,10 +289,18 @@ async function show_question1() {
     show_points.innerHTML = `<p>Player 1: ${points_player1} points</p>
         <p>Player 2: ${points_player2} points</p>
         <p>Current turn: Player ${current_player}</p>`;
+
+    // Clear screen after answering
+    results.innerHTML = "";
+    check_box_container.innerHTML = "";
+    titulo.innerHTML = "";
+    send_answer.onclick = null; // Remove event listener from the button
+
     // Enable roll dice and prepare for the next turn
     roll_dice.disabled = false;
   };
 }
+
 
 
 

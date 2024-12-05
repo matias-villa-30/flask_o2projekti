@@ -140,7 +140,6 @@ for (let i = 1; i < leftRightCells - 1; i++) {
     leftPart.appendChild(answersPart);
 
 
-
     // Game buttons div
     const gameButtons = document.createElement('div');
     gameButtons.className = 'game-buttons';

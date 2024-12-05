@@ -9,8 +9,24 @@ rules_button.onclick = () => {
 
 const quit_button = document.getElementById('quit_button');
 quit_button.onclick = () => {
-  confirm("Are you sure you want to quit the game?");
+    const confirmation = confirm("Are you sure you want to quit the game?");
+    if (confirmation) {
+        // Clear the screen content and provide the back-to-home button
+        document.body.innerHTML = `
+            <h1>Thank you for playing!</h1>
+            <button id="main-page-button">Go to Main Page</button>
+        `;
+
+        // Add functionality to redirect to Flask's home route
+        const mainPageButton = document.getElementById('main-page-button');
+        mainPageButton.onclick = () => {
+            window.location.href = "/"; // Flask's home route
+        };
+    }
 };
+
+
+
 
 function player_name() {
   // Create the form HTML
